@@ -44,3 +44,4 @@ logs/
 
 # --- Environment files ---
 .env
+/src/main/webapp/META-INF/context.xml
