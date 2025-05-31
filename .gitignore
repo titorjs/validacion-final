@@ -1,0 +1,44 @@
+# --- JAVA ---
+*.class
+*.log
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# --- MAVEN ---
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# --- ECLIPSE ---
+*.launch
+.settings/
+.project
+.classpath
+
+# --- IDEs ---
+.idea/
+*.iml
+*.iws
+.vscode/
+*.sw?
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- OpenXava-specific (in case of generated files) ---
+/work/
+/tmp/
+
+# --- Build tools ---
+build/
+bin/
+out/
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Environment files ---
+.env
