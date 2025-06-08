@@ -1,6 +1,7 @@
 package com.cfgj.validacion.validacionyverificacionfinal.modelo;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.openxava.annotations.*;
 
@@ -25,18 +26,22 @@ public class Miembro {
     private String direccion;
 
     @Column(length = 15)
+    @Pattern(regexp = "\\d{7,15}")
     private String telefono;
 
     @Column(length = 100, unique = true)
     @Required
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
     private String correo;
 
-    @Column(length = 20)
+    public enum Tipo { ESTUDIANTE, DOCENTE, INVESTIGADOR, ADMINISTRADOR }
+    @Enumerated(EnumType.STRING)
     @Required
-    private String tipoMiembro;
+    private Tipo tipoMiembro;
 
-    @Column(length = 10)
+    public enum Estado { ACTIVO, INACTIVO }
+    @Enumerated(EnumType.STRING)
     @Required
-    private String estado; // Ej: Activo, Inactivo
+    private Estado estado;
 }
 

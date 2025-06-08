@@ -4,16 +4,18 @@ import java.math.*;
 import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.openxava.annotations.*;
+import org.openxava.calculators.*;
 import org.openxava.model.*;
 
 import com.cfgj.validacion.validacionyverificacionfinal.calculadores.*;
 
 import lombok.*;
 
-@Entity
-@Getter
+@Entity 
+@Getter 
 @Setter
 public class Prestamo extends Identifiable {
 
@@ -26,6 +28,8 @@ public class Prestamo extends Identifiable {
     private Libro libro;
 
     @Required
+    @DefaultValueCalculator(CurrentDateCalculator.class)
+    @FutureOrPresent(message="La fecha de préstamo no puede ser anterior a hoy")
     private Date fechaPrestamo;
 
     @Required
@@ -38,4 +42,15 @@ public class Prestamo extends Identifiable {
     @ReadOnly
     private BigDecimal multa;
 
+    @AssertTrue(message="La fecha de devolución esperada debe ser igual o posterior a la fecha de préstamo")
+    public boolean isFechaEsperadaValida() {
+        if (fechaPrestamo == null || fechaDevolucionEsperada == null) return true;
+        return !fechaDevolucionEsperada.before(fechaPrestamo);
+    }
+
+    @AssertTrue(message="La fecha de devolución real debe ser igual o posterior a la fecha de préstamo")
+    public boolean isFechaRealValida() {
+        if (fechaPrestamo == null || fechaDevolucionReal == null) return true;
+        return !fechaDevolucionReal.before(fechaPrestamo);
+    }
 }
