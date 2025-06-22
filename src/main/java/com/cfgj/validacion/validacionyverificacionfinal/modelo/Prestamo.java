@@ -4,32 +4,33 @@ import java.math.*;
 import java.util.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 import org.openxava.annotations.*;
 import org.openxava.calculators.*;
-import org.openxava.model.*;
 
 import com.cfgj.validacion.validacionyverificacionfinal.calculadores.*;
 
 import lombok.*;
 
-@Entity 
-@Getter 
-@Setter
-public class Prestamo extends Identifiable {
+@View(
+  members = "libro, miembro; fechaPrestamo; fechaDevolucionEsperada; fechaDevolucionReal; multa; devuelto; registrar; cobrarMulta"
+)
+@Tab(properties = "libro.titulo, miembro.nombre, fechaPrestamo, fechaDevolucionEsperada, fechaDevolucionReal, multa, devuelto")
+@Entity @Getter @Setter
+public class Prestamo {
 
-    @ManyToOne
-    @Required
-    private Miembro miembro;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @ManyToOne
-    @Required
+    @ManyToOne @Required
     private Libro libro;
+
+    @ManyToOne @Required
+    private Miembro miembro;
 
     @Required
     @DefaultValueCalculator(CurrentDateCalculator.class)
-    @FutureOrPresent(message="La fecha de préstamo no puede ser anterior a hoy")
     private Date fechaPrestamo;
 
     @Required
@@ -38,19 +39,8 @@ public class Prestamo extends Identifiable {
     @OnChange(OnChangeCalculoMulta.class)
     private Date fechaDevolucionReal;
 
-    @Stereotype("MONEY")
-    @ReadOnly
     private BigDecimal multa;
 
-    @AssertTrue(message="La fecha de devolución esperada debe ser igual o posterior a la fecha de préstamo")
-    public boolean isFechaEsperadaValida() {
-        if (fechaPrestamo == null || fechaDevolucionEsperada == null) return true;
-        return !fechaDevolucionEsperada.before(fechaPrestamo);
-    }
-
-    @AssertTrue(message="La fecha de devolución real debe ser igual o posterior a la fecha de préstamo")
-    public boolean isFechaRealValida() {
-        if (fechaPrestamo == null || fechaDevolucionReal == null) return true;
-        return !fechaDevolucionReal.before(fechaPrestamo);
-    }
+    @Column
+    private boolean devuelto;
 }

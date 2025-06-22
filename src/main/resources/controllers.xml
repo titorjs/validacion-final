@@ -1,0 +1,6 @@
+<controllers>
+    <controller name="Prestamo">
+        <action name="registrar" class="com.cfgj.validacion.validacionyverificacionfinal.calculadores.RegistrarPrestamoAction"/>
+        <action name="cobrarMulta" class="com.cfgj.validacion.validacionyverificacionfinal.calculadores.CobrarMultaAction"/>
+    </controller>
+</controllers>
